@@ -1,0 +1,5 @@
+downloads/**
+*.lock
+
+# Add the list of large files that are not pushed to origin
+amazon_reviews_multi/

@@ -1,0 +1,16 @@
+{
+    "train": {
+        "path": "amazon_reviews_multi",
+        "name": "es",
+        "split": "train",
+        "use_columns": {
+            "review_body": "str",
+            "stars": "int32"
+        },
+        "out_columns": {
+            "input_ids": "reviews_body",
+            "attention_mask": "reviews_body",
+            "label": "stars"
+        }
+    }
+}
