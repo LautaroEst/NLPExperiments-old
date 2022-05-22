@@ -1,2 +1,4 @@
-experiments/*/output/**
+experiments/*/output/
 **__pycache__
+.vscode/
+**.autosave.xopp

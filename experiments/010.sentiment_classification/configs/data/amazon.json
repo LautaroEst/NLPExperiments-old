@@ -1,16 +1,18 @@
 {
     "train": {
+        "loading_args": {
+            "path": "amazon_reviews_multi",
+            "name": "es",
+            "split": "train"
+        },
+        "mapping_args": {
+            "batched": true
+        },
+        "batch_size": 32
+    },
+    "validation": {
         "path": "amazon_reviews_multi",
         "name": "es",
-        "split": "train",
-        "use_columns": {
-            "review_body": "str",
-            "stars": "int32"
-        },
-        "out_columns": {
-            "input_ids": "reviews_body",
-            "attention_mask": "reviews_body",
-            "label": "stars"
-        }
+        "split": "validation"
     }
 }

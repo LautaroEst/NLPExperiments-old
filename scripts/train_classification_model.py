@@ -53,14 +53,14 @@ def main():
     model = init_model(**args["model_config"])
 
     # Train and Validation Data:
-    train_dataloader, val_dataloader = prepare_data_for_training(tokenizer,**args["data_config"])
+    dataloaders = prepare_data_for_training(tokenizer,**args["data_config"])
 
     # Training
     results_history = train_classification_model(
         features_extractor=features_extractor,
         main_model=model,
-        train_dataloader=train_dataloader,
-        val_dataloader=val_dataloader,
+        train_dataloader=dataloaders["train"],
+        val_dataloader=dataloaders["validation"],
         **args["training_config"]
     )
 
