@@ -11,8 +11,14 @@
         "batch_size": 32
     },
     "validation": {
-        "path": "amazon_reviews_multi",
-        "name": "es",
-        "split": "validation"
+        "loading_args": {
+            "path": "amazon_reviews_multi",
+            "name": "es",
+            "split": "validation"
+        },
+        "mapping_args": {
+            "batched": true
+        },
+        "batch_size": 32
     }
 }

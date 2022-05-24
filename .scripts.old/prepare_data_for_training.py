@@ -1,10 +1,14 @@
 import argparse
 import json
 import os
+from datasets import load_dataset
 import torch
+from transformers import PreTrainedTokenizerFast
+from torch.utils.data import DataLoader
 
 from nlp.tokenizers import init_tokenizer
-from nlp.data import prepare_data_for_training
+
+
 
 def parse_args():
     # Parser init
@@ -30,7 +34,6 @@ def preprocess_dataset(sample,tokenizer):
         sample["review_body"],
         truncation=True,
         max_length=tokenizer.model_max_length,
-        return_tensors="pt"
     )
     return {
         "input_ids": encoded_input["input_ids"],
@@ -41,6 +44,33 @@ def preprocess_dataset(sample,tokenizer):
 
 def data_collate(batch,tokenizer):
     return tokenizer.pad(batch,return_tensors="pt",max_length=tokenizer.model_max_length)
+
+
+def prepare_data_for_training(
+        tokenizer: PreTrainedTokenizerFast,
+        preprocess_dataset,
+        data_collate,
+        **data_config
+    ):
+
+    columns_to_return = ['input_ids', 'label', 'attention_mask']
+
+    dataloaders = {}
+    for split in ["train", "validation"]:
+        dataset = load_dataset(**data_config[split]["loading_args"])
+        dataset = dataset.map(
+            lambda sample: preprocess_dataset(sample,tokenizer),
+            **data_config[split]["mapping_args"]
+        )
+        dataset.set_format(type='torch', columns=columns_to_return)
+        dataloaders[split] = DataLoader(
+            dataset,
+            batch_size=data_config[split]["batch_size"],
+            shuffle=True,
+            collate_fn=lambda batch: data_collate(batch,tokenizer)
+        )
+
+    return dataloaders
 
 
 def main():
@@ -54,8 +84,6 @@ def main():
         data_collate,
         **config
     )
-
-
 
 
 if __name__ == "__main__":

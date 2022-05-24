@@ -17,6 +17,6 @@ def prepare_corpus_to_train_tokenizer(**corpus_config):
     return batch_iterator, corpus_len
 
 
-def init_tokenizer(tokenizer_dir):
+def load_tokenizer(tokenizer_dir):
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_dir)
     return tokenizer

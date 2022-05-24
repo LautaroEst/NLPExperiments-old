@@ -6,7 +6,6 @@ class CBOWFeatures(nn.Module):
     
     def __init__(self,tokenizer,embeddings_dim=300,pretrained_file=None,train_features=True):
         super().__init__()
-        print(tokenizer.pad_token_id,tokenizer.vocab_size)
         embeddings = nn.Embedding(tokenizer.vocab_size,embeddings_dim,tokenizer.pad_token_id)
         self.embeddings = self._init_embeddings_from_file(pretrained_file,embeddings)
 

@@ -30,11 +30,9 @@ def main():
     tokenizer = init_tokenizer(tokenizer_dir)
     features_extractor = init_features_extractor(tokenizer,**config)
     
-    with open(os.path.join(output_dir,"features_config.json"),"w") as f:
+    with open(os.path.join(output_dir,"config.json"),"w") as f:
         json.dump(config,f)
-    torch.save({
-        "state_dict": features_extractor.state_dict()
-    },os.path.join(output_dir,"extractor_state_dict.pkl"))
+    torch.save(features_extractor.state_dict(),os.path.join(output_dir,"state_dict.pkl"))
     
 
 
