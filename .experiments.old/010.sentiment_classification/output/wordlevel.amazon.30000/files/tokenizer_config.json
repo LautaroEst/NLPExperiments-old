@@ -1,1 +1,0 @@
-{"model_max_length": 512, "padding_side": "right", "truncation_side": "right", "model_input_names": ["input_ids", "attention_mask"], "bos_token": "[BOS]", "eos_token": "[EOS]", "sep_token": "[SEP]", "pad_token": "[PAD]", "cls_token": "[CLS]", "mask_token": "[MASK]", "additional_special_tokens": [], "unk_token": "[UNK]", "tokenizer_class": "PreTrainedTokenizerFast"}

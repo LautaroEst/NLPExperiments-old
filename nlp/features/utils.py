@@ -7,7 +7,7 @@ import torch
 
 
 def init_features_extractor(tokenizer,**features_config):
-    if features_config["type"] == "cbow":
+    if features_config["extractor_class"] == CBOWFeatures:
         features_extractor = CBOWFeatures(tokenizer,**features_config["params"])
     else:
         raise ValueError(f"Features extractor of type {features_config['type']} not supported.")

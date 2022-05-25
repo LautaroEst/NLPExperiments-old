@@ -5,10 +5,10 @@ export PYTHONPATH:=../../:${PYTHONPATH}
 SCRIPTS_DIR:=../../scripts
 
 # Configs files
-TOKENIZER_CONFIG = configs/tokenizer/$(tokenizer).json
-FEATURES_CONFIG = configs/features/$(features).json
-DATA_CONFIG = configs/data/$(data).json
-TRAINING_CONFIG = configs/data/$(training).json
+TOKENIZER_CONFIG = configs/tokenizer/$(tokenizer).py
+FEATURES_CONFIG = configs/features/$(features).py
+DATA_CONFIG = configs/data/$(data).py
+TRAINING_CONFIG = configs/data/$(training).py
 
 # Output directories
 TOKENIZER_OUT_DIR = $(out_dir)/$(shell basename $(tokenizer))
@@ -32,13 +32,13 @@ data: $(DATA_FILES_DIR)
 training: $(TRAINING_FILES_DIR)
 
 
-$(out_dir):
-	mkdir -p $(TRAINING_OUT_DIR)
+# $(out_dir):
+# 	mkdir -p $(TRAINING_OUT_DIR)
 
 
-$(TOKENIZER_FILES_DIR): $(TOKENIZER_CONFIG) $(out_dir)
+$(TOKENIZER_FILES_DIR): $(TOKENIZER_CONFIG) #$(out_dir)
 	rm -rf $(TOKENIZER_FILES_DIR)
-	mkdir $(TOKENIZER_FILES_DIR)
+	mkdir -p $(TOKENIZER_FILES_DIR)
 	python $(SCRIPTS_DIR)/prepare_tokenizer.py \
 		--config $(TOKENIZER_CONFIG) \
 		--out $(TOKENIZER_FILES_DIR)
@@ -46,7 +46,7 @@ $(TOKENIZER_FILES_DIR): $(TOKENIZER_CONFIG) $(out_dir)
 
 $(FEATURES_FILES_DIR): $(FEATURES_CONFIG) $(TOKENIZER_FILES_DIR)
 	rm -rf $(FEATURES_FILES_DIR)
-	mkdir $(FEATURES_FILES_DIR)
+	mkdir -p $(FEATURES_FILES_DIR)
 	python $(SCRIPTS_DIR)/prepare_features.py \
 		--config $(FEATURES_CONFIG) \
 		--tokenizer_dir $(TOKENIZER_FILES_DIR) \
@@ -55,7 +55,7 @@ $(FEATURES_FILES_DIR): $(FEATURES_CONFIG) $(TOKENIZER_FILES_DIR)
 
 $(DATA_FILES_DIR): $(DATA_CONFIG) $(TOKENIZER_FILES_DIR) $(FEATURES_FILE_DIR)
 	rm -rf $(DATA_FILES_DIR)
-	mkdir $(DATA_FILES_DIR)
+	mkdir -p $(DATA_FILES_DIR)
 	python prepare_data_for_training.py \
 		--config $(DATA_CONFIG) \
 		--tokenizer_dir $(TOKENIZER_FILES_DIR) \
@@ -63,6 +63,8 @@ $(DATA_FILES_DIR): $(DATA_CONFIG) $(TOKENIZER_FILES_DIR) $(FEATURES_FILE_DIR)
 
 
 $(TRAINING_FILES_DIR): $(TRAINING_CONFIG) $(FEATURES_FILES_DIR) $(TOKENIZER_FILES_DIR) $(FEATURES_FILES_DIR)
+	rm -rf $(TRAINING_FILES_DIR)
+	mkdir -p $(TRAINING_FILES_DIR)
 	python $(SCRIPTS_DIR)/train_classifier.py \
 		--config $(TRAINING_CONFIG) \
 		--data_dir $(DATA_FILES_DIR) \
