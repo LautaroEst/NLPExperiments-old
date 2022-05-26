@@ -49,7 +49,7 @@ class TrainedModel(pl.LightningModule):
         optimizer.step()
         
 
-def train_classification_model(
+def train_sequence_classifier(
         features_extractor,main_model,train_dataloader,val_dataloader,**training_config
     ):
 

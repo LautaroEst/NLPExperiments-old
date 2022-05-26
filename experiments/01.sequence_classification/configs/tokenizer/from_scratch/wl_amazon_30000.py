@@ -37,7 +37,7 @@ config = {
         vocab_size=30000,
         min_frequency=0,
         show_progress=True,
-        special_tokens=list(_special_tokens.keys())
+        special_tokens=list(_special_tokens.values())
     ),
 
     "encoding_args": {
@@ -45,6 +45,7 @@ config = {
         "padding_side": "right",
         "truncation_side": "right",
         "model_input_names": ["input_ids", "attention_mask"],
+        "unk_token": _special_tokens["unk_token"],
         "bos_token": _special_tokens["bos_token"],
         "eos_token": _special_tokens["eos_token"],
         "sep_token": _special_tokens["sep_token"],

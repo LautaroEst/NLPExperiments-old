@@ -2,9 +2,11 @@ import argparse
 import json
 import os
 import torch
+import pickle
 
-from nlp.tokenizers import init_tokenizer
+from nlp.tokenizers import load_tokenizer
 from nlp.features import init_features_extractor
+from nlp.utils import import_configs_objs
 
 def parse_args():
     # Parser init
@@ -17,21 +19,20 @@ def parse_args():
     args = vars(parser.parse_args())
 
     # Process the arguments
-    with open(args["config"],"r") as f:
-        config = json.load(f)
+    config_dict = import_configs_objs(args["config"])["config"]
     tokenizer_dir = args["tokenizer_dir"]
     output_dir = args["out"]
 
-    return config, tokenizer_dir, output_dir
+    return config_dict, tokenizer_dir, output_dir
 
 
 def main():
     config, tokenizer_dir, output_dir = parse_args()
-    tokenizer = init_tokenizer(tokenizer_dir)
+    tokenizer = load_tokenizer(tokenizer_dir)
     features_extractor = init_features_extractor(tokenizer,**config)
-    
-    with open(os.path.join(output_dir,"config.json"),"w") as f:
-        json.dump(config,f)
+
+    with open(os.path.join(output_dir,"config.pkl"),"wb") as f:
+        pickle.dump(config,f)
     torch.save(features_extractor.state_dict(),os.path.join(output_dir,"state_dict.pkl"))
     
 

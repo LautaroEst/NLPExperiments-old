@@ -1,5 +1,6 @@
 import os
 import json
+import pickle
 
 from .cbow import CBOWFeatures
 
@@ -18,14 +19,14 @@ def init_features_extractor(tokenizer,**features_config):
 def load_features_extractor(tokenizer,features_dir):
     
     # Load the config.json file to init the features extractor
-    with open(os.path.join(features_dir,"config.json"),"r") as f:
-        config = json.load(f)
+    with open(os.path.join(features_dir,"config.pkl"),"rb") as f:
+        config = pickle.load(f)
     
     # Default initialization of the extractor
-    if config["type"] == "cbow":
+    if config["extractor_class"] == CBOWFeatures:
         extractor = CBOWFeatures(tokenizer,**config["params"])
     else:
-        raise ValueError(f"Features extractor of type {config['type']} not supported.")
+        raise ValueError(f"Features extractor of type {config['extractor_class']} not supported.")
 
     # Load the state dictionary
     state_dict = torch.load(os.path.join(features_dir,"state_dict.pkl"))

@@ -1,8 +1,0 @@
-{
-    "type": "cbow",
-    "params": {
-        "embeddings_dim": 300,
-        "pretrained_file": null,
-        "train_features": true
-    }
-}
